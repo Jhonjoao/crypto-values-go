@@ -11,13 +11,13 @@ import (
 
 //Result exported
 type Result struct {
-	value string
-	coin  string
+	value  string
+	coin   string
+	symbol string
 }
 
 func (r Result) String() string {
-	return fmt.Sprint(r.coin, " - ", r.value)
-	//, " - ", r.title, " - ", r.likes, " claps")
+	return fmt.Sprint(r.coin, "(", r.symbol, ")", " - ", r.value)
 }
 
 func main() {
@@ -72,6 +72,9 @@ func scrapParallel(url string, rchan chan Result) {
 
 	div := getFirstElementByClass(htmlParsed, "h2", "sc-1q9q90x-0")
 	r.coin = getFirstTextNode(div).Data
+
+	div = getFirstElementByClass(htmlParsed, "small", "nameSymbol")
+	r.symbol = getFirstTextNode(div).Data
 
 	div = getFirstElementByClass(htmlParsed, "div", "priceValue")
 	r.value = getFirstTextNode(div).Data
